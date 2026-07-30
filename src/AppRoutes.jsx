@@ -2,8 +2,6 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import { lazy } from 'react'
 import PropTypes from 'prop-types'
 import ErrorBoundary from './components/ui/ErrorBoundary'
-import Header from './components/layout/Header'
-import Footer from './components/layout/Footer'
 import ProtectedRoute from './components/ProtectedRoute'
 import Home from './pages/Home'
 import PostDetail from './pages/PostDetail'
@@ -11,19 +9,13 @@ import PostDetail from './pages/PostDetail'
 const Login = lazy(() => import('./pages/Login'))
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard'))
 
-const PublicLayout = ({ children }) => (
-  <ErrorBoundary>
-    <Header />
-    {children}
-    <Footer />
-  </ErrorBoundary>
-)
+const PublicLayout = ({ children }) => <ErrorBoundary>{children}</ErrorBoundary>
 
 PublicLayout.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
-/** The public website is one personal blog, not a collection of CMS pages. */
+/** The public website exposes only the blog feed and individual blog articles. */
 const AppRoutes = () => {
   return (
     <Routes>
@@ -53,8 +45,8 @@ const AppRoutes = () => {
           </PublicLayout>
         }
       />
-      <Route path="/pages/:slug" element={<Navigate to="/#stories" replace />} />
-      <Route path="/tutorials/:id" element={<Navigate to="/#stories" replace />} />
+      <Route path="/pages/:slug" element={<Navigate to="/" replace />} />
+      <Route path="/tutorials/:id" element={<Navigate to="/" replace />} />
       <Route
         path="/login"
         element={
@@ -73,26 +65,7 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
-      <Route
-        path="*"
-        element={
-          <PublicLayout>
-            <div className="grid min-h-[75vh] place-items-center bg-[#f4f1ea] px-6 pt-24">
-              <div className="text-center text-[#171713]">
-                <p className="font-serif text-8xl italic text-[#ff4f00]">404</p>
-                <h1 className="mt-3 text-3xl font-semibold">Hier gibt es nichts zu lesen.</h1>
-                <a
-                  href="/#stories"
-                  className={`mt-8 inline-flex rounded-full bg-[#171713] px-6 py-3 text-sm
-font-bold uppercase tracking-[0.12em] text-white`}
-                >
-                  Zurück zu den Beiträgen
-                </a>
-              </div>
-            </div>
-          </PublicLayout>
-        }
-      />
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
 }

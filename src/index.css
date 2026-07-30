@@ -4,14 +4,10 @@
  * ===========================================================
  * 
  * Architecture:
- * - Fonts: Inter (UI) & Merriweather (Display/Serif).
+ * - Font: Arial throughout the interface.
  * - Framework: Tailwind CSS (v4 engine).
  * - Theme: Custom "@theme" configuration with Aurora Dark tokens.
  */
-
-/* Editorial font pairing: geometric sans + expressive serif. */
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 /* Import Tailwind CSS base styles */
 @import "tailwindcss";
@@ -73,9 +69,10 @@
   --color-neutral-900: #0b1120;
 
   /* Typography */
-  --font-sans: "Space Grotesk", "Arial", "sans-serif";
-  --font-display: "Space Grotesk", "Arial", "sans-serif";
-  --font-serif: "Instrument Serif", "Georgia", "serif";
+  --font-sans: "Arial", "Helvetica", sans-serif;
+  --font-display: "Arial", "Helvetica", sans-serif;
+  --font-serif: "Arial", "Helvetica", sans-serif;
+  --font-mono: "Arial", "Helvetica", sans-serif;
 
   /* Premium Shadows */
   --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
@@ -105,6 +102,7 @@
 
   body {
     @apply bg-[#f4f1ea] text-[#171713] font-sans selection:bg-[#b9f227] selection:text-[#171713];
+    font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     min-width: 320px;
   }

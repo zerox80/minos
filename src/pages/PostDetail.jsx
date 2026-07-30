@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { ArrowLeft, Asterisk, CalendarDays, Clock3, Loader2, Share2 } from 'lucide-react'
+import { ArrowLeft, CalendarDays, Clock3, Loader2, Share2 } from 'lucide-react'
 import { Link, useParams } from 'react-router-dom'
 import { api } from '../api/client'
 import MarkdownRenderer from '../components/markdown/MarkdownRenderer'
@@ -14,7 +14,7 @@ const readingTime = (content) => {
   return Math.max(2, Math.ceil(words / 200))
 }
 
-/** Editorial article view matching the public one-page blog design. */
+/** Focused article view without global landing-page content. */
 const PostDetail = () => {
   const { pageSlug, postSlug } = useParams()
   const [post, setPost] = useState(null)
@@ -58,19 +58,15 @@ const PostDetail = () => {
 
   if (error) {
     return (
-      <main
-        className={`grid min-h-[75vh] place-items-center bg-[#f4f1ea] px-6 pt-28
-text-[#171713]`}
-      >
+      <main className="grid min-h-screen place-items-center bg-white px-6 text-[#171713]">
         <div className="max-w-lg text-center">
-          <p className="font-serif text-7xl italic text-[#ff4f00]">Oops.</p>
-          <h1 className="mt-4 text-3xl font-semibold">Dieser Beitrag ist nicht verfügbar.</h1>
+          <h1 className="text-3xl font-semibold">Dieser Blogartikel ist nicht verfügbar.</h1>
           <Link
-            to="/#stories"
-            className={`mt-8 inline-flex items-center gap-2 rounded-full bg-[#171713] px-6 py-3
-text-sm font-bold uppercase tracking-[0.12em] text-white`}
+            to="/"
+            className={`mt-8 inline-flex items-center gap-2 bg-[#171713] px-6 py-3 text-sm
+font-bold uppercase tracking-[0.1em] text-white`}
           >
-            <ArrowLeft className="h-4 w-4" /> Alle Beiträge
+            <ArrowLeft className="h-4 w-4" /> Alle Blogartikel
           </Link>
         </div>
       </main>
@@ -79,9 +75,9 @@ text-sm font-bold uppercase tracking-[0.12em] text-white`}
 
   if (!post) {
     return (
-      <main className="grid min-h-[75vh] place-items-center bg-[#f4f1ea] pt-28 text-[#171713]">
-        <div className="flex items-center gap-3 font-mono text-xs font-bold uppercase tracking-[0.18em]">
-          <Loader2 className="h-5 w-5 animate-spin text-[#ff4f00]" /> Beitrag wird geladen
+      <main className="grid min-h-screen place-items-center bg-white text-[#171713]">
+        <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.1em]">
+          <Loader2 className="h-5 w-5 animate-spin" /> Blogartikel wird geladen
         </div>
       </main>
     )
@@ -90,90 +86,69 @@ text-sm font-bold uppercase tracking-[0.12em] text-white`}
   const publishedDate = formatDate(post.published_at || post.created_at)
 
   return (
-    <main className="bg-[#f4f1ea] pb-24 pt-28 text-[#171713] sm:pt-32">
+    <main className="min-h-screen bg-white pb-20 pt-8 text-[#171713] sm:pt-12">
       <Helmet>
         <title>{post.meta?.title || post.title}</title>
         {post.excerpt && <meta name="description" content={post.excerpt} />}
       </Helmet>
 
       <article>
-        <header className="border-b border-[#171713] px-5 pb-14 sm:px-8 lg:px-12 lg:pb-20">
+        <header className="border-b border-[#171713]/25 px-5 pb-12 sm:px-8 lg:px-12 lg:pb-16">
           <div className="mx-auto max-w-[1180px]">
             <Link
-              to="/#stories"
+              to="/"
               className={`inline-flex items-center gap-2 text-xs font-bold uppercase
-tracking-[0.14em] text-[#171713]/60 transition-colors hover:text-[#ff4f00]`}
+tracking-[0.1em] text-[#171713]/60 transition-colors hover:text-[#171713]`}
             >
-              <ArrowLeft className="h-4 w-4" /> Zurück zum Blog
+              <ArrowLeft className="h-4 w-4" /> Alle Blogartikel
             </Link>
 
-            <div className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,1fr)_15rem] lg:items-end">
+            <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_15rem] lg:items-end">
               <div>
-                <div
-                  className={`mb-6 flex items-center gap-3 font-mono text-[11px] font-bold
-uppercase tracking-[0.18em] text-[#ff4f00]`}
-                >
-                  <Asterisk className="h-4 w-4" /> Persönlich notiert
-                </div>
                 <h1
-                  className={`max-w-4xl font-display text-[clamp(2.75rem,4.2vw,4.5rem)]
-font-semibold leading-[0.98] tracking-[-0.045em] text-[#171713]`}
+                  className={`max-w-4xl text-[clamp(2.6rem,4.2vw,4.5rem)] font-bold
+leading-[1.02] tracking-[-0.045em] text-[#171713]`}
                 >
                   {post.title}
                 </h1>
                 {post.excerpt && (
-                  <p className="mt-8 max-w-3xl text-xl leading-relaxed text-[#171713]/60 sm:text-2xl">
+                  <p className="mt-8 max-w-3xl text-xl leading-relaxed text-[#171713]/65 sm:text-2xl">
                     {post.excerpt}
                   </p>
                 )}
               </div>
 
               <div
-                className={`border-t border-[#171713]/20 pt-5 font-mono text-[11px] font-bold
-uppercase tracking-[0.13em] text-[#171713]/55 lg:border-l lg:border-t-0
-lg:pl-6 lg:pt-0`}
+                className={`border-t border-[#171713]/20 pt-5 text-[11px] font-bold uppercase
+tracking-[0.1em] text-[#171713]/55 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0`}
               >
                 {publishedDate && (
                   <p className="flex items-center gap-2 py-2">
-                    <CalendarDays className="h-4 w-4 text-[#ff4f00]" /> {publishedDate}
+                    <CalendarDays className="h-4 w-4" /> {publishedDate}
                   </p>
                 )}
                 <p className="flex items-center gap-2 py-2">
-                  <Clock3 className="h-4 w-4 text-[#ff4f00]" /> {minutes} Min. Lesezeit
+                  <Clock3 className="h-4 w-4" /> {minutes} Min. Lesezeit
                 </p>
                 <button
                   type="button"
                   onClick={handleShare}
-                  className="flex items-center gap-2 py-2 transition-colors hover:text-[#ff4f00]"
+                  className="flex items-center gap-2 py-2 transition-colors hover:text-[#171713]"
                 >
-                  <Share2 className="h-4 w-4 text-[#ff4f00]" /> {shareLabel}
+                  <Share2 className="h-4 w-4" /> {shareLabel}
                 </button>
               </div>
             </div>
           </div>
         </header>
 
-        <div className="px-5 py-14 sm:px-8 lg:px-12 lg:py-20">
+        <div className="px-5 py-12 sm:px-8 lg:px-12 lg:py-16">
           <MarkdownRenderer
             content={post.content_markdown}
             withBreaks
             className="editorial-markdown mx-auto max-w-[780px]"
           />
         </div>
-
-        <footer className="mx-auto max-w-[1180px] border-t border-[#171713] px-5 pt-10 sm:px-8">
-          <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-            <p className="font-serif text-3xl italic">Danke fürs Lesen.</p>
-            <Link
-              to="/#stories"
-              className={`inline-flex items-center gap-2 self-start rounded-full bg-[#171713]
-px-6 py-3 text-xs font-bold uppercase tracking-[0.12em] text-white transition-colors
-hover:bg-[#ff4f00]`}
-            >
-              <ArrowLeft className="h-4 w-4" /> Weitere Beiträge
-            </Link>
-          </div>
-        </footer>
       </article>
     </main>
   )
